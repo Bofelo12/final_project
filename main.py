@@ -18,39 +18,39 @@ def test():
 
 @app.route('/test_result',  methods=['POST', 'GET'])
 def test_result():
-    age = int(request.form['age'])
-    sex = int(request.form['sex'])
-    trestbps = float(request.form['trestbps'])
-    chol = float(request.form['chol'])
-    restecg = float(request.form['restecg'])
-    thalach = float(request.form['thalach'])
-    exang = int(request.form['exang'])
-    cp = int(request.form['cp'])
-    fbs = float(request.form['fbs'])
-    x = np.array([age, sex, cp, trestbps, chol, fbs, restecg,
+        age = int(request.form['age'])
+        sex = int(request.form['sex'])
+        trestbps = float(request.form['trestbps'])
+        chol = float(request.form['chol'])
+        restecg = float(request.form['restecg'])
+        thalach = float(request.form['thalach'])
+        exang = int(request.form['exang'])
+        cp = int(request.form['cp'])
+        fbs = float(request.form['fbs'])
+        x = np.array([age, sex, cp, trestbps, chol, fbs, restecg,
                   thalach, exang]).reshape(1, -1)
 
-    scaler_path = os.path.join(os.path.dirname(__file__), 'models/scaler.pkl')
-    scaler = None
-    with open(scaler_path, 'rb') as f:
-        scaler = pickle.load(f)
+        scaler_path = os.path.join(os.path.dirname(__file__), 'models/scaler.pkl')
+        scaler = None
+        with open(scaler_path, 'rb') as f:
+            scaler = pickle.load(f)
 
-    x = scaler.transform(x)
+        x = scaler.transform(x)
 
-    model_path = os.path.join(os.path.dirname(__file__), 'models/rfc.sav')
-    clf = joblib.load(model_path)
+        model_path = os.path.join(os.path.dirname(__file__), 'models/rfc.sav')
+        clf = joblib.load(model_path)
 
-    y = clf.predict(x)
-    print(y)
+        y = clf.predict(x)
+        print(y)
 
-    # No heart disease
-    if y == 0:
-        return render_template('noHeartAttack.html')
+        # No heart disease
+        if y == 0:
+            return render_template('noHeartAttack.html')
 
-    # y=1,2,4,4 are stages of heart disease
-    else:
-        return render_template('heartAttack.html', stage=int(y))
-     
+        # y=1,2,4,4 are stages of heart disease
+        else:
+            return render_template('heartAttack.html', stage=int(y))
+
 @app.route('/know')
 def know():
     return render_template('know.html')
