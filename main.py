@@ -77,5 +77,30 @@ def procedures():
 def treatment():
     return render_template('treatment.html')
 
+@app.route('/diet')
+def diet():
+    return render_template('diet.html')
+
+@app.route('/exercise')
+def exercise():
+    return render_template('exercise.html')
+
+@app.route('/bmi')
+def bmi():
+    return render_template('bmi.html')
+
+@app.route('/bmi_result',  methods=['POST', 'GET'])
+def bmi_result():
+    bmi = ''
+    if request.method == 'POST' and 'weight' in request.form:
+        weight = float(request.form.get('weight'))
+        height = float(request.form.get('height'))
+        bmi = calc_bmi(weight, height)
+    return render_template("bmi.html",
+	                        bmi=bmi)
+
+def calc_bmi(weight, height):
+    return round((weight / ((height / 100) ** 2)), 2)
+    
 if __name__ == '__main__':
     app.run(debug=True)
