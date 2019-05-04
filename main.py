@@ -16,6 +16,10 @@ def index():
 def test():
     return render_template('test.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/test_result',  methods=['POST', 'GET'])
 def test_result():
         age = int(request.form['age'])
